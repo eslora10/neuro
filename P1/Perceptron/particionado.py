@@ -7,15 +7,16 @@ class Particionado():
     def __init__(self, file):
         self.atr = []
         self.clases = []
-        with open(file) as input:
-            l = input.readline() #num atributos, clases
-            params = l.strip("\n").split(" ")
+        with open(file) as infile:
+            l = infile.readline() #num atributos, clases
+            params = l.strip("\n").split()
             num_atributos = int(params[0])
             num_clases = int(params[1])
-            for line in input:
-                params = line.strip("\n").split(" ")
-                self.atr.append([float(i) for i in params[:num_atributos-1]])
+            for line in infile:
+                params = line.strip("\n").split()
+                self.atr.append([float(i) for i in params[:num_atributos]])
                 self.clases.append([float(i) for i in params[num_atributos:]])
+            infile.close()
 
         self.atr = np.array(self.atr)
         self.clases = np.array(self.clases)
@@ -56,8 +57,9 @@ class Modo3(Particionado):
         self.y_test = self.clases
 
 
-p = Modo1("./data/problema_real1.txt", 0.8)
-print(p.X_train[0:])
-print(p.X_test.shape[0])
-print(p.y_train.shape[0])
-print(p.y_test.shape[0])
+if __name__ == "__main__":
+    p = Modo1("./data/problema_real1.txt", 0.8)
+    print(p.X_train[0:])
+    print(p.X_test.shape[0])
+    print(p.y_train.shape[0])
+    print(p.y_test.shape[0])
