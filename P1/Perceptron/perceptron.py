@@ -11,10 +11,13 @@ class Perceptron():
         self.pesos=np.zeros((tamsalida,tamentrada+1)) #inicializamos pesos y sesgo a 0 (una fila por neurona de salida, tantas columnas como neuronas de entrada + el sesgo)
 
 
-    def entrenamiento(self,datostrain, clasestrain):
-
+    def train(self,datostrain, clasestrain):
+        np.place(clasestrain,clasestrain==0,-1)
+        print (clasestrain)
         contador=1
-        while contador ==1 or not np.array_equal(pesos_nueva_epoca,pesos_actual) :
+        pesos_nueva_epoca=self.pesos
+        pesos_actual=np.ones_like(self.pesos)
+        while contador <=100 and not np.array_equal(pesos_nueva_epoca,pesos_actual) :
             pesos_nueva_epoca=self.pesos.copy()
             print ("EPOCA " + str(contador) + "\nPesos al inicio: " + str(pesos_nueva_epoca)) 
             #para cada dato de entrenamiento
@@ -39,7 +42,7 @@ class Perceptron():
             pesos_actual=self.pesos
             contador +=1
 
-    def clasifica(self, datostest, tamsalida):
+    def predict(self, datostest, tamsalida):
         predicciones=[]
         
         for dato in range(datostest.shape[0]):
@@ -56,9 +59,9 @@ class Perceptron():
             predicciones.append(prediccion)
         return np.array(predicciones)
 
-    def errores(self,predicciones, datostest):
+    def test(self,predicciones, datostest):
         err=0
-        
+        np.place(datostest,datostest==0, -1)
         for i in range(datostest.shape[0]):
             if not np.array_equal(datostest[i], predicciones[i]):
                 err+=1
