@@ -44,7 +44,9 @@ class RedNeuronal():
         return np.array(pred)
 
     def ecm(self, y_test, prediction):
-        return np.norm(y_test-prediction)**2
+        D = y_test.shape[1]
+        N = y_test.shape[0]
+        return np.array([np.linalg.norm(y_test[:,i]-prediction[:,i])**2 for i in range(D)])
 
     def precision(self, y_test, prediction):
         err = y_test != prediction

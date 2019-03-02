@@ -79,6 +79,11 @@ class Adaline(RedNeuronal):
             nepocas += 1
         print("Entrenado en {0} epocas".format(nepocas))
 
+    def predict(self, X_test):
+        pred = super().predict(X_test)
+        np.place(pred, pred == 0, 1)
+        np.place(pred, pred == -1, 0)
+        return pred
 
 if __name__ == "__main__":
     import particionado as p
@@ -89,3 +94,4 @@ if __name__ == "__main__":
     neuron.train(datos.X_train, datos.y_train)
     prediction = neuron.predict(datos.X_test)
     print(neuron.precision(datos.y_test, prediction))
+    print(neuron.ecm(datos.y_test, prediction))
