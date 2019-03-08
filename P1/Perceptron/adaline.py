@@ -4,7 +4,7 @@ from redNeuronal import RedNeuronal
 
 class Adaline(RedNeuronal):
 
-    def __init__(self, alpha, tol, num_input, num_output, max_epocas = 100):
+    def __init__(self, alpha, tol, num_input, num_output, max_epocas = 500):
         super().__init__(num_input, num_output,[], alpha = alpha, max_epocas = max_epocas)
         self.tol = tol
 
@@ -47,8 +47,9 @@ if __name__ == "__main__":
 
     datos = p.Modo1("./data/problema_real1.txt", 0.7)
 
-    neuron = Adaline(0.1, 0.2, datos.X_train.shape[1], datos.y_train.shape[1])
+    neuron = Adaline(0.3, 0.2, datos.X_train.shape[1], datos.y_train.shape[1])
     neuron.train(datos.X_train, datos.y_train)
     prediction = neuron.predict(datos.X_test)
+    neuron.matriz(datos.y_test,prediction)
     print(neuron.precision(datos.y_test, prediction))
     print(neuron.ecm(datos.y_test, prediction))

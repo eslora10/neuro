@@ -6,13 +6,13 @@ from pylab import *
 import matplotlib.pyplot as plt
 
 
-modo= Modo1("./data/problema_real1.txt", 0.8)
+modo= Modo1("./data/problema_real2.txt", 0.8)
 errores=[]
 for i in range (200):
-	p= Perceptron(1,i,modo.X_train.shape[1], modo.y_train.shape[1])
+	p = Perceptron(0.1,i,modo.X_train.shape[1], modo.y_train.shape[1],300)
 	p.train(modo.X_train, modo.y_train)
-	predicciones=p.predict(modo.X_test, modo.y_test.shape[1])
-	errores.append(p.test(predicciones,modo.y_test))
+	predicciones = p.predict(modo.X_test)
+	print(p.precision(modo.y_test, predicciones))
 plt.figure()
 plt.plot(errores)
 plt.show()
