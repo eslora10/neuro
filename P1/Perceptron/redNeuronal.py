@@ -46,8 +46,34 @@ class RedNeuronal():
     def ecm(self, y_test, prediction):
         D = y_test.shape[1]
         N = y_test.shape[0]
-        return np.array([np.linalg.norm(y_test[:,i]-prediction[:,i])**2 for i in range(D)])
+        return np.array([np.linalg.norm(y_test[:,i]-prediction[:,i])**2 for i in range(D)])/(2*N)
 
     def precision(self, y_test, prediction):
         err = y_test != prediction
         return sum(err)/y_test.shape[0]
+
+
+    def matriz(self, y_test, prediction):
+        tp=0
+        fp=0
+        tn=0
+        fn=0
+        for i in range(y_test.shape[0]):
+            if np.array_equal(y_test[i],prediction[i]):
+                if np.array_equal(y_test[i],[1,0]):
+                    tn+=1
+                else:
+                    tp+=1
+            else:
+                if np.array_equal(y_test[i],[1,0]):
+                    fn+=1
+                else:
+                    fp+=1
+        print("\t\tMATRIZ DE CONFUSION")
+        print("\t\tValor predicho")
+        print("\t\tbenigno\tmaligno")
+        print("\tbenigno\t{}\t\t{}".format(tn,fn))
+        print("Valor real")
+        print("\tmaligno\t{}\t\t{}".format(fp,tp))
+
+
