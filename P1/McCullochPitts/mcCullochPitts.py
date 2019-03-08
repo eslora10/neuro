@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 
 umbral = 2
 red = { "x1": {"valor": 0, "incidencia": {}},
@@ -37,7 +38,8 @@ def respuesta(red, x1, x2, x3):
 
     print(red["y1"]["valor"], red["y2"]["valor"])
 
-with open("McCulloch_Pitts.txt") as entrada:
+filename = sys.argv[1]
+with open(filename) as entrada:
     for line in entrada:
         parsed = line.strip("\n").split()
         x1 = int(parsed[0])

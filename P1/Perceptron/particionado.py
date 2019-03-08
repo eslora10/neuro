@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import random
+from copy import deepcopy
 
 class Particionado():
 
@@ -42,8 +43,8 @@ class Modo2(Particionado):
         super().__init__(file)
         self.X_train = self.atr
         self.y_train = self.clases
-        self.X_test = self.atr
-        self.y_test = self.clases
+        self.X_test = deepcopy(self.atr)
+        self.y_test = deepcopy(self.clases)
 
 class Modo3(Particionado):
 
