@@ -6,10 +6,10 @@ class Capa():
         self.weights = np.zeros((num_output, num_input+1)) #Input + 1 por el bias
         self.umbral = umbral
 
-    def activacion(self, input):
+    def activacion(self, input_value):
         salida = []
         for i in range(self.weights.shape[0]):
-            y_in = np.dot(input, self.weights[i,:])
+            y_in = np.dot(input_value, self.weights[i,:])
             if y_in < -self.umbral:
                 salida.append(-1)
             elif y_in>self.umbral:
@@ -43,10 +43,19 @@ class RedNeuronal():
 
         return np.array(pred)
 
-    def ecm(self, y_test, prediction):
+    def ecm(self, X_test, y_test):
         D = y_test.shape[1]
         N = y_test.shape[0]
-        return np.array([np.linalg.norm(y_test[:,i]-prediction[:,i])**2 for i in range(D)])/(2*N)
+        err = [0, 0]
+        for i in range(N):
+            x = np.concatenate(([1], X_test[i]))
+            for capa in self.capas[:-1]:
+                x = capa.activacion(x)
+            for j in range(D):
+                y_in = np.dot(x, self.capas[-1].weights[j,:])
+                err[j] += (y_test[i][j]-y_in)**2
+
+        return [i/(2*N) for i in err]
 
     def precision(self, y_test, prediction):
         err = y_test != prediction

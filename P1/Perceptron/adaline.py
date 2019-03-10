@@ -4,7 +4,7 @@ from redNeuronal import RedNeuronal
 
 class Adaline(RedNeuronal):
 
-    def __init__(self, alpha, tol, num_input, num_output, max_epocas = 500):
+    def __init__(self, alpha, tol, num_input, num_output, max_epocas = 100):
         super().__init__(num_input, num_output,[], alpha = alpha, max_epocas = max_epocas)
         self.tol = tol
 
@@ -24,7 +24,10 @@ class Adaline(RedNeuronal):
                     x = np.concatenate(([1],X_train[i]))
                     t = y_train[i][j]
                     delta = self.alpha*(t-np.dot(w,x))*x
-                    w = w+delta
+                    try:
+                        w = w+delta
+                    except RuntimeWarning:
+                        print(w)
                     self.capas[0].weights[j] = w
                     if max_val < np.max(abs(delta)):
                         max_val = np.max(abs(delta))
@@ -37,6 +40,7 @@ class Adaline(RedNeuronal):
             print("La variacion de los pesos es menor que la tolerancia")
 
     def predict(self, X_test):
+        np.place(X_test, X_test == 0, -1)
         pred = super().predict(X_test)
         np.place(pred, pred == 0, 1)
         np.place(pred, pred == -1, 0)
@@ -51,5 +55,5 @@ if __name__ == "__main__":
     neuron.train(datos.X_train, datos.y_train)
     prediction = neuron.predict(datos.X_test)
     neuron.matriz(datos.y_test,prediction)
-    print(neuron.precision(datos.y_test, prediction))
-    print(neuron.ecm(datos.y_test, prediction))
+    print("Porcentaje de error al clasificar los datos: " + str(neuron.precision(datos.y_test, prediction)))
+    print("Error cuadrático medio al clasificar los datos: " + str(neuron.ecm(datos.X_test, datos.y_test)))

@@ -18,7 +18,7 @@ red = { "x1": {"valor": 0, "incidencia": {}},
         "y2": {"valor": 0, "incidencia": {"z31": 2, "z32": 2, "z33": 2}},
 }
 
-def respuesta(red, x1, x2, x3):
+def respuesta(red, x1, x2, x3, fp):
     red["x1"]["valor"] = x1
     red["x2"]["valor"] = x2
     red["x3"]["valor"] = x3
@@ -36,15 +36,18 @@ def respuesta(red, x1, x2, x3):
             red[nodo]["valor"] = int(red[nodo]["valor"] >= umbral)
         siguientes.remove(nodo)
 
-    print(red["y1"]["valor"], red["y2"]["valor"])
+    fp.write("{0} {1}\n".format(red["y1"]["valor"], red["y2"]["valor"]))
 
-filename = sys.argv[1]
-with open(filename) as entrada:
+in_file = sys.argv[1]
+out_file = open("McCulloch_Pitts.out", "w")
+with open(in_file) as entrada:
     for line in entrada:
         parsed = line.strip("\n").split()
         x1 = int(parsed[0])
         x2 = int(parsed[1])
         x3 = int(parsed[2])
-        respuesta(red, x1, x2, x3)
+        respuesta(red, x1, x2, x3, out_file)
 
-    respuesta(red, 0, 0, 0)
+    respuesta(red, 0, 0, 0, out_file)
+
+out_file.close()

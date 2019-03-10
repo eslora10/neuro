@@ -59,4 +59,4 @@ if __name__ == "__main__":
     predicciones = p.predict(modo.X_test)
     p.matriz(modo.y_test, predicciones)
     print("Porcentaje de error al clasificar los datos: " + str(p.precision(modo.y_test, predicciones)))
-    print("Error cuadrático medio al clasificar los datos: " + str(p.ecm(modo.y_test, predicciones)))
+    print("Error cuadrático medio al clasificar los datos: " + str(p.ecm(modo.X_test, modo.y_test)))
