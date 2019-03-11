@@ -79,10 +79,10 @@ class RedNeuronal():
                 else:
                     fp+=1
         print("\t\tMATRIZ DE CONFUSION")
-        print("\t\tValor predicho")
-        print("\t\tbenigno\tmaligno")
-        print("\tbenigno\t{}\t\t{}".format(tn,fn))
-        print("Valor real")
-        print("\tmaligno\t{}\t\t{}".format(fp,tp))
+        print("\t\t\tValor real")
+        print("\t\tClase positiva\tClase negativa")
+        print("\tClase positiva\t{}\t\t{}".format(tp,fp))
+        print("Valor predicho")
+        print("\tClase negativa\t{}\t\t{}".format(fn,tn))
 
 

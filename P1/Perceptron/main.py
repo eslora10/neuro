@@ -51,3 +51,5 @@ for i in range(prediction.shape[0]):
     for j in range(prediction.shape[1]):
         f.write(str(prediction[i][j])+"  ")
     f.write("\n")
+print("Porcentaje de error al clasificar los datos: " + str(red.precision(datos.y_test, prediction)))
+print("Error cuadrático medio al clasificar los datos: " + str(red.ecm(datos.X_test, datos.y_test)))
