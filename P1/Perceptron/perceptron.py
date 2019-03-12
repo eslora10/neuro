@@ -9,6 +9,7 @@ class Perceptron(RedNeuronal):
 
     def train(self,datostrain, clasestrain):
         np.place(clasestrain,clasestrain==0,-1)
+        
         contador=0
         pesos_nueva_epoca=self.capas[0].weights
         pesos_actual=np.ones_like(self.capas[0].weights)

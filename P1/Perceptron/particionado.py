@@ -59,8 +59,8 @@ class Modo3(Particionado):
 
 
 if __name__ == "__main__":
-    p = Modo1("./data/problema_real1.txt", 0.8)
+    p = Modo3("./data/problema_real1.txt", "salida.txt")
     print(p.X_train[0:])
-    print(p.X_test.shape[0])
+    print(p.X_test)
     print(p.y_train.shape[0])
-    print(p.y_test.shape[0])
+    print(p.y_test)
