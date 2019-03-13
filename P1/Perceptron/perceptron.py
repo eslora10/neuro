@@ -9,7 +9,7 @@ class Perceptron(RedNeuronal):
 
     def train(self,datostrain, clasestrain):
         np.place(clasestrain,clasestrain==0,-1)
-        
+        np.place(datostrain, datostrain==0, -1)
         contador=0
         pesos_nueva_epoca=self.capas[0].weights
         pesos_actual=np.ones_like(self.capas[0].weights)
@@ -44,6 +44,7 @@ class Perceptron(RedNeuronal):
             print("Los pesos no han cambiado durante una epoca de entrenamiento")
 
     def predict(self, datostest):
+        np.place(datostest,datostest==0, -1)
         pred = super().predict(datostest)
         #np.place(pred, pred == 0, 1)
         np.place(pred, pred == -1, 0)
@@ -52,9 +53,9 @@ class Perceptron(RedNeuronal):
 if __name__ == "__main__":
     from particionado import *
 
-    modo = Modo2("./data/problema_real1.txt")
+    modo = Modo3("./data/and.txt", "salida.txt")
     
-    p = Perceptron(0.3,3,modo.X_train.shape[1], modo.y_train.shape[1],300)
+    p = Perceptron(0.1,3,modo.X_train.shape[1], modo.y_train.shape[1],300)
     p.train(modo.X_train, modo.y_train)
    
     predicciones = p.predict(modo.X_test)
