@@ -2,8 +2,8 @@
 import numpy as np
 
 class Capa():
-    def __init__(self, num_input, num_output,activacion):
-        self.weights = np.zeros((num_output, num_input+1)) #Input + 1 por el bias
+    def __init__(self, num_input, num_output, activacion, pesos):
+        self.weights = pesos((num_output, num_input+1)) #Input + 1 por el bias
         self.factivacion = activacion
 
     def activacion(self, input_value):
@@ -14,16 +14,16 @@ class Capa():
         return np.array(salida)
 
 class RedNeuronal():
-    def __init__(self, num_input, num_output, ncapa, factivacion, alpha = 0.1, max_epocas = 100):
+    def __init__(self, num_input, num_output, ncapa, factivacion, alpha = 0.1, max_epocas = 100, pesos = np.zeros):
         self.umbral = umbral
         self.max_epocas = max_epocas
         self.alpha = alpha
         self.capas = []
         n = num_input
         for num_neuronas in ncapa:
-            self.capas.append(Capa(n, num_neuronas, factivacion))
+            self.capas.append(Capa(n, num_neuronas, factivacion, pesos))
             n = num_neuronas
-        self.capas.append(Capa(n, num_output, factivacion))
+        self.capas.append(Capa(n, num_output, factivacion, pesos))
 
     def train(self, X_train, y_train):
         pass
