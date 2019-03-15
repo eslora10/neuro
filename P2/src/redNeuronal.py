@@ -2,33 +2,28 @@
 import numpy as np
 
 class Capa():
-    def __init__(self, num_input, num_output, umbral):
+    def __init__(self, num_input, num_output,activacion):
         self.weights = np.zeros((num_output, num_input+1)) #Input + 1 por el bias
-        self.umbral = umbral
+        self.factivacion = activacion
 
     def activacion(self, input_value):
         salida = []
         for i in range(self.weights.shape[0]):
             y_in = np.dot(input_value, self.weights[i,:])
-            if y_in < -self.umbral:
-                salida.append(-1)
-            elif y_in>self.umbral:
-                salida.append(1)
-            else:
-                salida.append(0)
+            salida.append(self.factivacion(y_in))
         return np.array(salida)
 
 class RedNeuronal():
-    def __init__(self, num_input, num_output, ncapa, alpha = 0.1, umbral = 0, max_epocas = 100):
+    def __init__(self, num_input, num_output, ncapa, factivacion, alpha = 0.1, max_epocas = 100):
         self.umbral = umbral
         self.max_epocas = max_epocas
         self.alpha = alpha
         self.capas = []
         n = num_input
         for num_neuronas in ncapa:
-            self.capas.append(Capa(n, num_neuronas, umbral))
+            self.capas.append(Capa(n, num_neuronas, factivacion))
             n = num_neuronas
-        self.capas.append(Capa(n, num_output, umbral))
+        self.capas.append(Capa(n, num_output, factivacion))
 
     def train(self, X_train, y_train):
         pass
@@ -84,5 +79,3 @@ class RedNeuronal():
         print("\tClase positiva\t{}\t\t{}".format(tp,fp))
         print("Valor predicho")
         print("\tClase negativa\t{}\t\t{}".format(fn,tn))
-
-
