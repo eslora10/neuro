@@ -3,7 +3,7 @@ import numpy as np
 
 class Capa():
     def __init__(self, num_input, num_output, activacion, pesos):
-        self.weights = pesos((num_output, num_input+1)) #Input + 1 por el bias
+        self.weights = pesos(num_output, num_input+1) #Input + 1 por el bias
         self.factivacion = activacion
 
     def activacion(self, input_value):
@@ -11,11 +11,11 @@ class Capa():
         for i in range(self.weights.shape[0]):
             y_in = np.dot(input_value, self.weights[i,:])
             salida.append(self.factivacion(y_in))
+
         return np.array(salida)
 
 class RedNeuronal():
     def __init__(self, num_input, num_output, ncapa, factivacion, alpha = 0.1, max_epocas = 100, pesos = np.zeros):
-        self.umbral = umbral
         self.max_epocas = max_epocas
         self.alpha = alpha
         self.capas = []
@@ -31,8 +31,9 @@ class RedNeuronal():
     def predict(self, X_test):
         pred = []
         for i in range(X_test.shape[0]):
-            x = np.concatenate(([1], X_test[i]))
+            x = X_test[i]
             for capa in self.capas:
+                x = np.concatenate(([1], x))
                 x = capa.activacion(x)
             pred.append(x)
 
