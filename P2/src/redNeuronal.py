@@ -44,12 +44,13 @@ class RedNeuronal():
         N = y_test.shape[0]
         err = [0, 0]
         for i in range(N):
-            x = np.concatenate(([1], X_test[i]))
-            for capa in self.capas[:-1]:
+            x = X_test[i]
+            for capa in self.capas:
+                x = np.concatenate(([1], x))
                 x = capa.activacion(x)
+
             for j in range(D):
-                y_in = np.dot(x, self.capas[-1].weights[j,:])
-                err[j] += (y_test[i][j]-y_in)**2
+                err[j] += (y_test[i][j]-x[j])**2
 
         return [i/(2*N) for i in err]
 
