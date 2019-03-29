@@ -25,30 +25,52 @@ class Particionado():
 
 class Modo1(Particionado):
 
-    def __init__(self, file, tam_train):
+    def __init__(self, file, tam_train, normalizacion = False):
         super().__init__(file)
         n_datos = self.atr.shape[0]
         idx = np.array(range(n_datos))
         np.random.shuffle(idx)
         idx_train = idx[:int(tam_train*n_datos)]
         idx_test = idx[int(tam_train*n_datos):]
+
         self.X_train = self.atr[idx_train]
         self.y_train = self.clases[idx_train]
         self.X_test = self.atr[idx_test]
         self.y_test = self.clases[idx_test]
-
+        
+        if normalizacion:
+            medias = np.mean(self.X_train, axis=0)
+            sd = np.std(self.X_train, axis=0)
+            print(medias)
+            print(sd)
+            contador = 0
+            for i in range(self.X_train.shape[0]):
+                self.X_train[i]= np.divide((self.X_train[i]-medias),sd)
+                for j in range(self.X_train.shape[1]):
+                    if self.X_train[i,j]>1 or self.X_train[i,j]<-1:
+                        contador +=1
+            print("Contador: ", contador)
+            for i in range(self.X_test.shape[0]):
+                self.X_test[i]= np.divide(self.X_test[i]-medias,sd)
 class Modo2(Particionado):
 
-    def __init__(self, file):
+    def __init__(self, file, normalizacion= False):
         super().__init__(file)
         self.X_train = self.atr
         self.y_train = self.clases
         self.X_test = deepcopy(self.atr)
         self.y_test = deepcopy(self.clases)
+        if normalizacion:
+            medias = np.mean(self.X_train, axis=0)
+            sd = np.std(self.X_train, axis=0)
+            for i in range(self.X_train.shape[0]):
+                self.X_train[i]= np.divide(self.X_train[i]-medias,sd)
+            for i in range(self.X_test.shape[0]):
+                self.X_test[i]= np.divide(self.X_test[i]-medias,sd)
 
 class Modo3(Particionado):
 
-    def __init__(self, file_train, file_test):
+    def __init__(self, file_train, file_test, normalizacion= False):
         super().__init__(file_train)
         self.X_train = self.atr
         self.y_train = self.clases
@@ -56,4 +78,11 @@ class Modo3(Particionado):
         super().__init__(file_test)
         self.X_test = self.atr
         self.y_test = self.clases
+        if normalizacion:
+            medias = np.mean(self.X_train, axis=0)
+            sd = np.std(self.X_train, axis=0)
+            for i in range(self.X_train.shape[0]):
+                self.X_train[i]= np.divide(self.X_train[i]-medias,sd)
+            for i in range(self.X_test.shape[0]):
+                self.X_test[i]= np.divide(self.X_test[i]-medias,sd)
 

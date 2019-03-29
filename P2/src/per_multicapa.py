@@ -12,9 +12,8 @@ class PerceptronMulticapa(RedNeuronal):
         # exponenciales
         return (1-fx)*(1+fx)/2
 
-    def __init__(self, num_input, num_output, ncapa, alpha = 0.1, max_epocas = 100, normalizacion = True):
+    def __init__(self, num_input, num_output, ncapa, alpha = 0.1, max_epocas = 100):
         super().__init__(num_input, num_output, ncapa, self.sigmoide_bipolar, alpha, max_epocas,self.random_init)
-        self.normalizacion = normalizacion
 
     def random_init(self, x, y):
         return np.random.random_sample((x,y)) - 0.5
@@ -31,16 +30,8 @@ class PerceptronMulticapa(RedNeuronal):
 
     def train(self, X_train, y_train):
         contador = 0
-        print(X_train)
-        if self.normalizacion:
-            medias = np.mean(X_train, axis=0)
-            sd = np.std(X_train, axis=0)
-            for i in range(X_train.shape[0]):
-                X_train[i]= np.divide(X_train[i]-medias,sd)
-        else :
-            np.place(X_train, X_train==0, -1)
-            np.place(y_train, y_train==0, -1)
-
+        np.place(X_train, X_train==0, -1)
+        np.place(y_train, y_train==0, -1)
         while contador < self.max_epocas: #condicion de parada
             for dato in range(X_train.shape[0]):
                 # Propagacion
@@ -67,14 +58,14 @@ class PerceptronMulticapa(RedNeuronal):
 
 
 if __name__ == "__main__":
-    from particionado import Modo2 
+    from particionado import Modo1 
     for f in ["problema_real4"]:
         print("----------"+f+"----------")
-        datos = Modo2("../data/"+f+".txt")
-        ada = PerceptronMulticapa(2, 2, [2], normalizacion= True)
+        datos = Modo1("../data/"+f+".txt", 0.8, normalizacion= True)
+        print (datos.X_train)
+        ada = PerceptronMulticapa(datos.X_train.shape[1],datos.y_train.shape[1], [2])
         ada.train(datos.X_train, datos.y_train)
         prediction = ada.predict(datos.X_test)
-        print(ada.precision(datos.y_test, prediction))
         print(ada.ecm(datos.X_test, datos.y_test))
 
 
