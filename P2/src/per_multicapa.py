@@ -40,7 +40,7 @@ class PerceptronMulticapa(RedNeuronal):
         else :
             np.place(X_train, X_train==0, -1)
             np.place(y_train, y_train==0, -1)
-            
+
         while contador < self.max_epocas: #condicion de parada
             for dato in range(X_train.shape[0]):
                 # Propagacion
@@ -49,20 +49,18 @@ class PerceptronMulticapa(RedNeuronal):
                 capas.insert(0, X_train[dato])
                 y = capas[-1]
                 delta = (y_train[dato] - y)*self.dsigmoide_bipolar(y)
-                correccion = self.alpha*np.dot(delta.reshape(-1,1),[capas[-2]])
+                act = np.concatenate(([1],capas[-2]))
+                correccion = self.alpha*delta.reshape(-1,1)*act
                 matriz.append(correccion)
                 for capa in range(len(capas)-2):
                     z = capas[-2-capa]
-                    delta_in = np.dot(delta,self.capas[-1-capa].weights)
-                    print (delta_in, self.dsigmoide_bipolar(z))
-                    delta = delta_in[1:]*self.dsigmoide_bipolar(z)
-                    print(capas[-2-capa])
-                    correccion = self.alpha*np.dot(delta.reshape(-1,1),[capas[-3-capa]])
+                    delta_in = np.dot(delta,self.capas[-1-capa].weights[:,1:])
+                    delta = delta_in*self.dsigmoide_bipolar(z)
+                    act = np.concatenate(([1],capas[-3-capa]))
+                    correccion = self.alpha*delta.reshape(-1,1)*act
                     matriz.insert(0,correccion)
-                
+
                 for i in range(len(matriz)):
-                    print (self.capas[i].weights) 
-                    print (matriz[i])
                     self.capas[i].weights+=matriz[i]
             contador+=1
 
