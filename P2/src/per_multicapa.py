@@ -59,14 +59,20 @@ class PerceptronMulticapa(RedNeuronal):
 
 if __name__ == "__main__":
     from particionado import Modo1 
-    for f in ["problema_real4"]:
+    for f in ["problema_real2"]:
         print("----------"+f+"----------")
         datos = Modo1("../data/"+f+".txt", 0.8, normalizacion= True)
-        print (datos.X_train)
         ada = PerceptronMulticapa(datos.X_train.shape[1],datos.y_train.shape[1], [2])
         ada.train(datos.X_train, datos.y_train)
         prediction = ada.predict(datos.X_test)
         print(ada.ecm(datos.X_test, datos.y_test))
+        for i in range(prediction.shape[0]):
+            for j in range(prediction.shape[1]):
+                if prediction[i,j]<0:
+                    prediction[i,j]=0
+                else :
+                    prediction[i,j]=1
+        ada.matriz(datos.y_test, prediction)
 
 
 
