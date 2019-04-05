@@ -30,8 +30,8 @@ class PerceptronMulticapa(RedNeuronal):
 
     def train(self, X_train, y_train):
         contador = 0
-        np.place(X_train, X_train==0, -1)
-        np.place(y_train, y_train==0, -1)
+        #np.place(X_train, X_train==0, -1)
+        #np.place(y_train, y_train==0, -1)
         while contador < self.max_epocas: #condicion de parada
             for dato in range(X_train.shape[0]):
                 # Propagacion
@@ -58,19 +58,11 @@ class PerceptronMulticapa(RedNeuronal):
 
 
 if __name__ == "__main__":
-    from particionado import Modo1 
-    for f in ["problema_real4"]:
+    from particionado import Modo1
+    for f in ["problema_real6"]:
         print("----------"+f+"----------")
-        datos = Modo1("../data/"+f+".txt", 0.8, normalizacion= True)
-        print (datos.X_train)
+        datos = Modo1("../data/"+f+".txt", 0.8, normalizacion="")
         ada = PerceptronMulticapa(datos.X_train.shape[1],datos.y_train.shape[1], [2])
         ada.train(datos.X_train, datos.y_train)
         prediction = ada.predict(datos.X_test)
         print(ada.ecm(datos.X_test, datos.y_test))
-
-
-
-
-
-
-
