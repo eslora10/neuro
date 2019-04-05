@@ -9,11 +9,11 @@ parser = argparse.ArgumentParser(description='Ejecuta el algoritmo del perceptro
 parser.add_argument('in_file', help="fichero de entrada para entenar")
 parser.add_argument('--in_file2', help="fichero de entrada para entenar en Modo3")
 parser.add_argument('modo', type=int, help="Modo 1, 2 o 3")
-parser.add_argument('capas', type=int, nargs='+', help='neuronas de las capas intermedias')
-parser.add_argument('--out_file')
-parser.add_argument('--tam_train', type=float, default=0.7)
-parser.add_argument('--alpha', type=float, default=0.1)
-parser.add_argument('--nepocas', type=int, default=100)
+parser.add_argument('capas', type=int, metavar='ncapas', nargs='+', help='neuronas de las capas intermedias')
+parser.add_argument('--out_file', help="fichero para las predicciones")
+parser.add_argument('--tam_train', type=float, default=0.7, help="porcentaje de datos para entrenamiento")
+parser.add_argument('--alpha', type=float, default=0.1, help="constante de aprendizaje")
+parser.add_argument('--nepocas', type=int, default=100, help="numero de epocas de entrenamiento")
 parser.add_argument('--norm', default="estandar", help="estandar para normalizacion estandas, min-max para scaling")
 
 args = parser.parse_args()
@@ -39,27 +39,16 @@ if args.modo==3: #Modo 3 reescribimos el fichero de test con las clases predicha
             f = open(args.out_file, "w")
         else:
             f = open(args.in_file2, "w")
+        f.write(str(datos.X_test.shape[1]) + "  " + str(prediction.shape[1]) + "\n")
+        for i in range(datos.X_test.shape[0]):
+            linea= ""
+            for j in range(datos.X_test.shape[1]):
+                linea += str(datos.X_test[i, j]) +"  "
+            for j in range(prediction.shape[1]):
+                linea += str(prediction[i][j])+ "  "
+            f.write(linea+"\n")
     except:
-        f = stdout
-    f.write(str(datos.X_test.shape[1]) + "  " + str(prediction.shape[1]) + "\n")
-    for i in range(datos.X_test.shape[0]):
-        linea= ""
-        for j in range(datos.X_test.shape[1]):
-            linea += str(datos.X_test[i, j]) +"  "
-        for j in range(prediction.shape[1]):
-            linea += str(prediction[i][j])+ "  "
-        f.write(linea+"\n")
+        pass
 else: # Modos 1 y 2, nos interesa ver el error al clasificar
-    try:
-        f = open(args.out_file, "w")
-
-    except:
-        f = stdout
-
-    for i in range(prediction.shape[0]):
-
-        for j in range(prediction.shape[1]):
-            f.write(str(prediction[i][j])+"  ")
-        f.write("\n")
     print("Porcentaje de error al clasificar los datos: " + str(red.precision(datos.y_test, prediction)))
     print("Error cuadrático medio al clasificar los datos: " + str(red.ecm(datos.X_test, datos.y_test)))
