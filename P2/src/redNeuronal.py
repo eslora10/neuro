@@ -55,6 +55,12 @@ class RedNeuronal():
         return [i/(2*N) for i in err]
 
     def precision(self, y_test, prediction):
+        for i in range(prediction.shape[0]):
+            for j in range(prediction.shape[1]):
+                if prediction[i,j]<0.5:
+                    prediction[i,j]=0
+                else :
+                    prediction[i,j]=1
         err = y_test != prediction
         return sum(err)/y_test.shape[0]
 
@@ -64,6 +70,14 @@ class RedNeuronal():
         fp=0
         tn=0
         fn=0
+
+        for i in range(prediction.shape[0]):
+            for j in range(prediction.shape[1]):
+                if prediction[i,j]<0.5:
+                    prediction[i,j]=0
+                else :
+                    prediction[i,j]=1
+
         for i in range(y_test.shape[0]):
             if np.array_equal(y_test[i],prediction[i]):
                 if np.array_equal(y_test[i],[1,0]):

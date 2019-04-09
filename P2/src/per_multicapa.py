@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from redNeuronal import RedNeuronal
+import matplotlib.pyplot as plt
 
 class PerceptronMulticapa(RedNeuronal):
 
@@ -59,10 +60,24 @@ class PerceptronMulticapa(RedNeuronal):
 
 if __name__ == "__main__":
     from particionado import Modo1
-    for f in ["problema_real6"]:
+    for f in ["problema_real5"]:
         print("----------"+f+"----------")
-        datos = Modo1("../data/"+f+".txt", 0.8, normalizacion="")
-        ada = PerceptronMulticapa(datos.X_train.shape[1],datos.y_train.shape[1], [2])
-        ada.train(datos.X_train, datos.y_train)
-        prediction = ada.predict(datos.X_test)
-        print(ada.ecm(datos.X_test, datos.y_test))
+        datos = Modo1("../data/"+f+".txt", 0.8, normalizacion="estandar")
+        error=[]
+        ecm=[]
+        for i in [[2], [2,2], [2,2,2], [2,2,2,2], [2,2,2,2,2]]:
+            ada = PerceptronMulticapa(datos.X_train.shape[1],datos.y_train.shape[1], i)
+            ada.train(datos.X_train, datos.y_train)
+            prediction = ada.predict(datos.X_test)
+            ecm.append(np.mean(ada.ecm(datos.X_test, datos.y_test)))
+            #ada.matriz(datos.y_test, prediction)
+            error.append(np.mean(ada.precision(datos.y_test, prediction)))
+
+        plt.plot(error)
+        plt.xlabel('Numero de capas ocultas')
+        plt.title('Precision en funcion del numero de capas ocultas (con 2 neuronas cada una)')
+        plt.figure()
+        plt.plot(ecm)
+        plt.xlabel('Numero de capas ocultas')
+        plt.title('Error cuadratico medio en funcion del numero de capas ocultas (con 2 neuronas cada una)')
+        plt.show()

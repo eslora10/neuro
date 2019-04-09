@@ -50,5 +50,6 @@ if args.modo==3: #Modo 3 reescribimos el fichero de test con las clases predicha
     except:
         pass
 else: # Modos 1 y 2, nos interesa ver el error al clasificar
-    print("Porcentaje de error al clasificar los datos: " + str(red.precision(datos.y_test, prediction)))
-    print("Error cuadrático medio al clasificar los datos: " + str(red.ecm(datos.X_test, datos.y_test)))
+    print("Porcentaje de error al clasificar los datos: " + str(np.mean(red.precision(datos.y_test, prediction))))
+    print("Error cuadrático medio al clasificar los datos: " + str(np.mean(red.ecm(datos.X_test, datos.y_test))))
+    red.matriz(datos.y_test, prediction)
