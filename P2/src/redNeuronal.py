@@ -52,7 +52,7 @@ class RedNeuronal():
             for j in range(D):
                 err[j] += (y_test[i][j]-x[j])**2
 
-        return [i/(2*N) for i in err]
+        return np.mean([i/(2*N) for i in err])
 
     def precision(self, y_test, prediction):
         for i in range(prediction.shape[0]):
@@ -62,7 +62,7 @@ class RedNeuronal():
                 else :
                     prediction[i,j]=1
         err = y_test != prediction
-        return sum(err)/y_test.shape[0]
+        return np.mean(sum(err)/y_test.shape[0])
 
 
     def matriz(self, y_test, prediction):
