@@ -56,13 +56,13 @@ class Modo1(Particionado):
 
 class Modo2(Particionado):
 
-    def __init__(self, file, normalizacion= False):
+    def __init__(self, file, normalizacion= ""):
         super().__init__(file)
         self.X_train = self.atr
         self.y_train = self.clases
         self.X_test = deepcopy(self.atr)
         self.y_test = deepcopy(self.clases)
-        if normalizacion:
+        if normalizacion == "estandar":
             medias = np.mean(self.X_train, axis=0)
             sd = np.std(self.X_train, axis=0)
             for i in range(self.X_train.shape[0]):
@@ -70,9 +70,18 @@ class Modo2(Particionado):
             for i in range(self.X_test.shape[0]):
                 self.X_test[i]= np.divide(self.X_test[i]-medias,sd)
 
+        elif normalizacion == "min-max":
+            min = self.X_train.min(axis=0)
+            max = self.X_train.max(axis=0)
+            for i in range(self.X_train.shape[0]):
+                self.X_train[i]= 2*np.divide(self.X_train[i]-min, max-min)-1
+            for i in range(self.X_test.shape[0]):
+                self.X_test[i]= 2*np.divide(self.X_test[i]-min, max-min)-1
+
+
 class Modo3(Particionado):
 
-    def __init__(self, file_train, file_test, normalizacion= False):
+    def __init__(self, file_train, file_test, normalizacion= ""):
         super().__init__(file_train)
         self.X_train = self.atr
         self.y_train = self.clases
@@ -80,10 +89,18 @@ class Modo3(Particionado):
         super().__init__(file_test)
         self.X_test = self.atr
         self.y_test = self.clases
-        if normalizacion:
+        if normalizacion == "estandar":
             medias = np.mean(self.X_train, axis=0)
             sd = np.std(self.X_train, axis=0)
             for i in range(self.X_train.shape[0]):
                 self.X_train[i]= np.divide(self.X_train[i]-medias,sd)
             for i in range(self.X_test.shape[0]):
                 self.X_test[i]= np.divide(self.X_test[i]-medias,sd)
+
+        elif normalizacion == "min-max":
+            min = self.X_train.min(axis=0)
+            max = self.X_train.max(axis=0)
+            for i in range(self.X_train.shape[0]):
+                self.X_train[i]= 2*np.divide(self.X_train[i]-min, max-min)-1
+            for i in range(self.X_test.shape[0]):
+                self.X_test[i]= 2*np.divide(self.X_test[i]-min, max-min)-1

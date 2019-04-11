@@ -40,13 +40,17 @@ if args.modo==3: #Modo 3 reescribimos el fichero de test con las clases predicha
             f = open(args.out_file, "w")
         else:
             f = open(args.in_file2, "w")
-        f.write(str(datos.X_test.shape[1]) + "  " + str(prediction.shape[1]) + "\n")
+        f.write(str(datos.X_test.shape[1]) + " " + str(prediction.shape[1]) + "\n")
         for i in range(datos.X_test.shape[0]):
             linea= ""
             for j in range(datos.X_test.shape[1]):
-                linea += str(datos.X_test[i, j]) +"  "
+                linea += str(datos.X_test[i, j]) +" "
             for j in range(prediction.shape[1]):
-                linea += str(prediction[i][j])+ "  "
+                if prediction[i][j] >0.5:
+                    linea+= str(1) + " "
+                else :
+                    linea += str(0) + " "
+                #linea += str(prediction[i][j])+ " "
             f.write(linea+"\n")
     except:
         pass
