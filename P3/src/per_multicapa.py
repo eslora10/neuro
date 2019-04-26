@@ -16,6 +16,8 @@ class PerceptronMulticapa(RedNeuronal):
     def __init__(self, num_input, num_output, ncapa, alpha = 0.1, max_epocas = 100, tol = 0, plot = False):
         self.tol = tol
         self.errores = []
+        self.media_errores= []
+        self.lrc = []
         self.plot = plot
         super().__init__(num_input, num_output, ncapa, self.sigmoide_bipolar, alpha, max_epocas,self.random_init)
 
@@ -61,8 +63,10 @@ class PerceptronMulticapa(RedNeuronal):
             contador+=1
 
             #if self.plot:
-                # Para mostrar la grafica de la evolucion del ecm en train
-            #    self.errores.append(self.ecm(X_train, y_train))
+                 #Para mostrar la grafica de la evolucion de las metricas pedidas en train
+            #    self.errores.append(self.pixeles_errados(y_test, y))
+            #    self.media_errores.append(self.pixeles_errados(y_test, y)/y_test.shape[0])
+            #    self.lrc.append(self.letras_recuperadas_correctamente(y_test, y))
 
             if self.tol != 0:
                 # Se especifica una tolerancia, calculamos el ecm sobre train
