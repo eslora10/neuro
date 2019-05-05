@@ -13,13 +13,18 @@ class PerceptronMulticapa(RedNeuronal):
         # exponenciales
         return (1-fx)*(1+fx)/2
 
-    def __init__(self, num_input, num_output, ncapa, alpha = 0.1, max_epocas = 100, tol = 0, plot = False):
+    def __init__(self, num_input, num_output, ncapa, alpha = 0.1, max_epocas = 100, tol = 0, plot = False,
+                 fact_salida = None, dfact_salida = None):
         self.tol = tol
         self.errores = []
         self.media_errores= []
         self.lrc = []
         self.plot = plot
-        super().__init__(num_input, num_output, ncapa, self.sigmoide_bipolar, alpha, max_epocas,self.random_init)
+        if dfact_salida == None:
+            self.dfact_salida = self.dsigmoide_bipolar
+        else:
+            self.dfact_salida = dfact_salida
+        super().__init__(num_input, num_output, ncapa, self.sigmoide_bipolar, fact_salida, alpha, max_epocas,self.random_init)
 
     def random_init(self, x, y):
         return np.random.random_sample((x,y)) - 0.5
@@ -45,7 +50,7 @@ class PerceptronMulticapa(RedNeuronal):
                 capas =  self.propagacion(X_train[dato])
                 capas.insert(0, X_train[dato])
                 y = capas[-1]
-                delta = (y_train[dato] - y)*self.dsigmoide_bipolar(y)
+                delta = (y_train[dato] - y)*self.dfact_salida(y)
                 act = np.concatenate(([1],capas[-2]))
                 correccion = self.alpha*delta.reshape(-1,1)*act
                 matriz.append(correccion)

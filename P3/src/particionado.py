@@ -11,12 +11,12 @@ class Particionado():
         with open(file) as infile:
             l = infile.readline() #num atributos, clases
             params = l.strip("\n").split()
-            num_atributos = int(params[0])
-            num_clases = int(params[1])
+            self.num_atributos = int(params[0])
+            self.num_clases = int(params[1])
             for line in infile:
                 params = line.strip("\n").split()
-                self.atr.append([float(i) for i in params[:num_atributos]])
-                self.clases.append([float(i) for i in params[num_atributos:]])
+                self.atr.append([float(i) for i in params[:self.num_atributos]])
+                self.clases.append([float(i) for i in params[self.num_atributos:]])
             infile.close()
 
         self.atr = np.array(self.atr)
@@ -104,3 +104,20 @@ class Modo3(Particionado):
                 self.X_train[i]= 2*np.divide(self.X_train[i]-min, max-min)-1
             for i in range(self.X_test.shape[0]):
                 self.X_test[i]= 2*np.divide(self.X_test[i]-min, max-min)-1
+
+
+class Temporal(Particionado):
+    """ Similar al modo 1 pero sin realizar un shuffle de los datos
+    """
+    def __init__(self, file, tam_train):
+        super().__init__(file)
+        n_datos = self.atr.shape[0]
+        idx = np.array(range(n_datos))
+        idx_train = idx[:int(tam_train*n_datos)]
+        idx_test = idx[int(tam_train*n_datos):]
+
+        self.X_train = self.atr[idx_train]
+        self.y_train = self.clases[idx_train]
+        self.X_test = self.atr[idx_test]
+        self.y_test = self.clases[idx_test]
+

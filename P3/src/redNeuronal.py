@@ -15,7 +15,7 @@ class Capa():
         return np.array(salida)
 
 class RedNeuronal():
-    def __init__(self, num_input, num_output, ncapa, factivacion, alpha = 0.1, max_epocas = 100, pesos = np.zeros):
+    def __init__(self, num_input, num_output, ncapa, factivacion, factivacion_salida = None, alpha = 0.1, max_epocas = 100, pesos = np.zeros):
         self.max_epocas = max_epocas
         self.alpha = alpha
         self.capas = []
@@ -23,7 +23,10 @@ class RedNeuronal():
         for num_neuronas in ncapa:
             self.capas.append(Capa(n, num_neuronas, factivacion, pesos))
             n = num_neuronas
-        self.capas.append(Capa(n, num_output, factivacion, pesos))
+        if factivacion_salida == None:
+            self.capas.append(Capa(n, num_output, factivacion, pesos))
+        else:
+            self.capas.append(Capa(n, num_output, factivacion_salida, pesos))
 
     def train(self, X_train, y_train):
         pass
@@ -86,19 +89,14 @@ class RedNeuronal():
                     tp+=1
             else:
                 if np.array_equal(y_test[i],[1,0]):
-                    fn+=1
-                else:
-                    fp+=1
-        print("\t\tMATRIZ DE CONFUSION")
-        print("\t\t\tValor real")
-        print("\t\tClase positiva\tClase negativa")
+                    fprint("\t\tClase positiva\tClase negativa")
         print("\tClase positiva\t{}\t\t{}".format(tp,fp))
         print("Valor predicho")
         print("\tClase negativa\t{}\t\t{}".format(fn,tn))
 
 
 
-   def pixeles_errados(self, y_test, prediction):
+    def pixeles_errados(self, y_test, prediction):
         err=0
         for i in range(prediction.shape[0]):
             for j in range(prediction.shape[1]):
