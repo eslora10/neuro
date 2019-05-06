@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from redNeuronal import RedNeuronal
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 class PerceptronMulticapa(RedNeuronal):
 
@@ -67,11 +67,12 @@ class PerceptronMulticapa(RedNeuronal):
 
             contador+=1
 
-            #if self.plot:
-                 #Para mostrar la grafica de la evolucion de las metricas pedidas en train
-            #    self.errores.append(self.pixeles_errados(y_test, y))
-            #    self.media_errores.append(self.pixeles_errados(y_test, y)/y_test.shape[0])
-            #    self.lrc.append(self.letras_recuperadas_correctamente(y_test, y))
+
+            if self.plot:
+                #Para mostrar la grafica de la evolucion de las metricas pedidas en train
+                self.errores.append(self.pixeles_errados(y_train, y))
+                self.media_errores.append(self.pixeles_errados(y_train, y)/y_train.shape[0])
+                self.lrc.append(self.letras_recuperadas_correctamente(y_train, y))
 
             if self.tol != 0:
                 # Se especifica una tolerancia, calculamos el ecm sobre train
@@ -81,14 +82,35 @@ class PerceptronMulticapa(RedNeuronal):
                     print("Se ha alcanzado un valor de ecm menor que la tolerancia")
                     break
         print("Entrenado en {0} epocas".format(contador))
-        #if self.plot:
-        #    self.plot_ecm()
+        if self.plot:
+            self.plot_pixeles_errados()
+            self.plot_pixeles_errados_media()
+            self.plot_letras()
 
-"""
-    def plot_ecm(self):
+
+    def plot_pixeles_errados(self):
+        plt.figure()
         plt.plot(range(len(self.errores)), self.errores)
-        plt.ylabel("ECM")
+        plt.ylabel("Pixeles errados")
         plt.xlabel("Epoca de entrenamiento")
-        plt.title("Evolucion del error cuadratico medio en train")
-        plt.savefig("ECM-epoca.jpg")
-"""
+        plt.title("Evolucion de los pixeles errados totales en train")
+        plt.savefig("pixerrados-epoca.jpg")
+        plt.close()
+
+    def plot_pixeles_errados_media(self):
+        plt.figure()
+        plt.plot(range(len(self.media_errores)), self.media_errores)
+        plt.ylabel("Media de pixeles errados")
+        plt.xlabel("Epoca de entrenamiento")
+        plt.title("Evolucion de la media de pixeles errados por letra en train")
+        plt.savefig("media-pixerrados-epoca.jpg")
+        plt.close()
+
+    def plot_letras(self):
+        plt.figure()
+        plt.plot(range(len(self.lrc)), self.lrc)
+        plt.ylabel("Letras recuperadas correctamente")
+        plt.xlabel("Epoca de entrenamiento")
+        plt.title("Evolucion de las letras recuperadas correctamente en train")
+        plt.savefig("lrc-epoca.jpg")
+        plt.close()
