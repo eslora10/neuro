@@ -113,8 +113,8 @@ class Temporal(Particionado):
         super().__init__(file)
         n_datos = self.atr.shape[0]
         idx = np.array(range(n_datos))
-        idx_train = idx[:int(tam_train*n_datos)]
-        idx_test = idx[int(tam_train*n_datos):]
+        idx_train = idx[:tam_train]
+        idx_test = idx[tam_train:]
 
         self.X_train = self.atr[idx_train]
         self.y_train = self.clases[idx_train]
