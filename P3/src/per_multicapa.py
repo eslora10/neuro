@@ -44,6 +44,8 @@ class PerceptronMulticapa(RedNeuronal):
         #np.place(X_train, X_train==0, -1)
         #np.place(y_train, y_train==0, -1)
         while contador < self.max_epocas: #condicion de parada
+            pe=0
+            lrc=0
             for dato in range(X_train.shape[0]):
                 # Propagacion
                 matriz=[]
@@ -65,14 +67,19 @@ class PerceptronMulticapa(RedNeuronal):
                 for i in range(len(matriz)):
                     self.capas[i].weights+=matriz[i]
 
-            contador+=1
+                pe+=self.pixeles_errados(y_train[dato], y)
+                lrc+=self.letras_recuperadas_correctamente(y_train[dato], y)
 
 
             if self.plot:
                 #Para mostrar la grafica de la evolucion de las metricas pedidas en train
-                self.errores.append(self.pixeles_errados(y_train, y))
-                self.media_errores.append(self.pixeles_errados(y_train, y)/y_train.shape[0])
-                self.lrc.append(self.letras_recuperadas_correctamente(y_train, y))
+                self.errores.append(pe)
+                self.media_errores.append(pe/y_train.shape[0])
+                self.lrc.append(lrc)
+
+
+            contador+=1
+
 
             if self.tol != 0:
                 # Se especifica una tolerancia, calculamos el ecm sobre train

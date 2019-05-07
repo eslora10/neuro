@@ -99,19 +99,17 @@ class RedNeuronal():
     def pixeles_errados(self, y_test, prediction):
         err=0
         #Y_test llega en bipolar prediction en numeros decimales (sin pasar la f de act)
-        for i in range(y_test.shape[0]):
-            for j in range(y_test.shape[1]):
-                if y_test[i,j]<0 and prediction[j]>=0:
-                    err+=1
-                elif y_test[i,j]>=0 and prediction[j]<0 :
-                    err+=1
+        for j in range(len(prediction)):
+            if y_test[j]<0 and prediction[j]>=0:
+                err+=1
+            elif y_test[j]>=0 and prediction[j]<0 :
+                err+=1
 
         return err
 
     def letras_recuperadas_correctamente(self, y_test, prediction):
-        lrc=0
+        lrc = 0
         prediction_bip= np.array([1 if x >= 0 else -1 for x in prediction])
-        for i in range(y_test.shape[0]):
-            if np.array_equal(prediction_bip, y_test[i]):
-                lrc+=1
+        if np.array_equal(prediction_bip, y_test):
+            lrc=1
         return lrc
