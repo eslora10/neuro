@@ -45,13 +45,14 @@ class RedNeuronal():
     def ecm(self, X_test, y_test):
         D = y_test.shape[1]
         N = y_test.shape[0]
-        err = [0, 0]
+        err = [0 for _ in range(D)]
         for i in range(N):
             x = X_test[i]
             for capa in self.capas:
                 x = np.concatenate(([1], x))
                 x = capa.activacion(x)
 
+            print(x, y_test[i])
             for j in range(D):
                 err[j] += (y_test[i][j]-x[j])**2
 
