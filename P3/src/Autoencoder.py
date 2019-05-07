@@ -30,7 +30,7 @@ np.place(datos.y_train, datos.y_train == 0, -1)
 np.place(datos.X_test, datos.X_test == 0, -1)
 
 # Entrenamiento
-red = PerceptronMulticapa(datos.X_train.shape[1], datos.y_train.shape[1], args.capas, args.alpha, args.nepocas, args.tol)
+red = PerceptronMulticapa(datos.X_train.shape[1], datos.y_train.shape[1], args.capas, args.alpha, args.nepocas, args.tol, plot=True)
 red.train(datos.X_train, datos.y_train)
 
 # Test
@@ -38,3 +38,4 @@ prediction = red.predict(datos.X_test)
 np.place(prediction, prediction >= 0, 1)
 np.place(prediction, prediction < 0, 0)
 print(prediction[0])
+print(prediction[1])
