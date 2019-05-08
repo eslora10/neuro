@@ -6,6 +6,11 @@ import matplotlib.pyplot as plt
 class PerceptronMulticapa(RedNeuronal):
 
     def sigmoide_bipolar(self, x):
+        # para evitar overflow
+        if x > 300:
+            return 1
+        elif x < -300:
+            return -1
         return 2/(1+np.exp(-x))-1
 
     def dsigmoide_bipolar(self, fx):

@@ -52,7 +52,6 @@ class RedNeuronal():
                 x = np.concatenate(([1], x))
                 x = capa.activacion(x)
 
-            print(x, y_test[i])
             for j in range(D):
                 err[j] += (y_test[i][j]-x[j])**2
 
