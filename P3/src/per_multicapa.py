@@ -24,6 +24,7 @@ class PerceptronMulticapa(RedNeuronal):
         self.errores = []
         self.media_errores= []
         self.lrc = []
+        self.ecml = []
         self.plot = plot
         if dfact_salida == None:
             self.dfact_salida = self.dsigmoide_bipolar
@@ -75,12 +76,12 @@ class PerceptronMulticapa(RedNeuronal):
                 pe+=self.pixeles_errados(y_train[dato], y)
                 lrc+=self.letras_recuperadas_correctamente(y_train[dato], y)
 
-
             if self.plot:
                 #Para mostrar la grafica de la evolucion de las metricas pedidas en train
                 self.errores.append(pe)
                 self.media_errores.append(pe/y_train.shape[0])
                 self.lrc.append(lrc)
+                self.ecml.append(self.ecm(X_train, y_train))
 
 
             contador+=1
@@ -98,6 +99,7 @@ class PerceptronMulticapa(RedNeuronal):
             self.plot_pixeles_errados()
             self.plot_pixeles_errados_media()
             self.plot_letras()
+            self.plot_ecm()
 
 
     def plot_pixeles_errados(self):
@@ -125,4 +127,13 @@ class PerceptronMulticapa(RedNeuronal):
         plt.xlabel("Epoca de entrenamiento")
         plt.title("Evolucion de las letras recuperadas correctamente en train")
         plt.savefig("lrc-epoca.jpg")
+        plt.close()
+
+    def plot_ecm(self):
+        plt.figure()
+        plt.plot(range(len(self.ecml)), self.ecml)
+        plt.ylabel("ECM")
+        plt.xlabel("Epoca de entrenamiento")
+        plt.title("Evolucion del ECM en train")
+        plt.savefig("ecm.jpg")
         plt.close()
